@@ -8,11 +8,11 @@
 		<version>3.5.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>br.ufop.edu.web</groupId>
+	<groupId>br.edu.ufop.web</groupId>
 	<artifactId>nameserver</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>nameserver</name>
-	<description>Tickets nameserver service</description>
+	<description>Tickets nameserve service</description>
 	<url/>
 	<licenses>
 		<license/>

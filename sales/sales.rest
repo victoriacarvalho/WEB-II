@@ -1,0 +1,115 @@
+### 1. Show de Rock
+POST http://localhost:4000/events
+Content-Type: application/json
+
+{
+    "eventTypeId": 1,
+    "description": "Festival de Rock com bandas locais",
+    "eventDate": "2025-08-15T20:00:00",
+    "salesStartDate": "2025-07-01T10:00:00",
+    "salesEndDate": "2025-08-15T18:00:00",
+    "ticketPrice": 120.50
+}
+
+### 2. Peça de Teatro Clássico
+POST http://localhost:4000/events
+Content-Type: application/json
+
+{
+    "eventTypeId": 2,
+    "description": "Apresentação de 'Romeu e Julieta'",
+    "eventDate": "2025-09-10T19:30:00",
+    "salesStartDate": "2025-08-01T09:00:00",
+    "salesEndDate": "2025-09-10T17:00:00",
+    "ticketPrice": 80.00
+}
+
+### 3. Show de Stand-up Comedy
+POST http://localhost:4000/events
+Content-Type: application/json
+
+{
+    "eventTypeId": 2,
+    "description": "Noite de Comédia com humoristas renomados",
+    "eventDate": "2025-09-22T21:00:00",
+    "salesStartDate": "2025-08-20T12:00:00",
+    "salesEndDate": "2025-09-22T19:00:00",
+    "ticketPrice": 75.50
+}
+
+### 4. Concerto de Música Clássica
+POST http://localhost:4000/events
+Content-Type: application/json
+
+{
+    "eventTypeId": 1,
+    "description": "Orquestra sinfônica apresentando Beethoven",
+    "eventDate": "2025-10-05T20:00:00",
+    "salesStartDate": "2025-09-01T10:00:00",
+    "salesEndDate": "2025-10-05T18:00:00",
+    "ticketPrice": 150.00
+}
+
+### 5. Festival Gastronômico
+POST http://localhost:4000/events
+Content-Type: application/json
+
+{
+    "eventTypeId": 2,
+    "description": "Feira com comidas típicas de vários países",
+    "eventDate": "2025-10-18T12:00:00",
+    "salesStartDate": "2025-09-15T09:00:00",
+    "salesEndDate": "2025-10-18T10:00:00",
+    "ticketPrice": 50.00
+}
+
+### 6. Show da Virada
+POST http://localhost:4000/events
+Content-Type: application/json
+
+{
+    "eventTypeId": 1,
+    "description": "Grande festa de Réveillon com várias atrações",
+    "eventDate": "2025-12-31T22:00:00",
+    "salesStartDate": "2025-11-01T09:00:00",
+    "salesEndDate": "2025-12-31T18:00:00",
+    "ticketPrice": 250.00
+}
+
+### Listar todos os eventos
+GET http://localhost:4000/events
+
+### Buscar o evento com ID 6
+GET http://localhost:4000/events/14
+
+### Atualizar o evento com ID 10 (Show da Virada)
+PUT http://localhost:4000/events/10
+Content-Type: application/json
+
+{
+    "eventTypeId": 1,
+    "description": "Show da Virada - Edição Especial com Fogos!",
+    "eventDate": "2025-12-31T23:00:00",
+    "salesStartDate": "2025-11-01T09:00:00",
+    "salesEndDate": "2025-12-31T18:00:00",
+    "ticketPrice": 275.00
+}
+
+### Criar uma nova venda (para os eventos com ID 2 e 3)
+POST http://localhost:4000/sales
+Content-Type: application/json
+
+{
+    "userId": 1,
+    "paymentStatus": "PAGO",
+    "eventIds": [14]
+}
+
+### Buscar a venda que acabou de ser criada (assumindo que o ID dela será 1)
+GET http://localhost:4000/sales/12
+
+### Deletar o evento com ID 7
+DELETE http://localhost:4000/events/9
+
+### Deletar a venda que acabou de ser criada (assumindo que o ID dela será 1)
+DELETE http://localhost:4000/sales/12

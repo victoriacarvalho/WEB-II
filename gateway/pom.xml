@@ -8,11 +8,11 @@
 		<version>3.5.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>br.edu.ufop.br</groupId>
+	<groupId>br.edu.ufop.web</groupId>
 	<artifactId>gateway</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>gateway</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Tickets gateway service</description>
 	<url/>
 	<licenses>
 		<license/>
