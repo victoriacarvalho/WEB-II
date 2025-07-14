@@ -1,0 +1,90 @@
+GET http://localhost:3000/users/status
+
+###
+GET http://localhost:3000/users
+
+###
+GET http://localhost:3000/users/a3d0fee0-8a0c-4cbf-93c0-ed3d0057218f
+
+
+###
+GET http://localhost:3000/users/byname/fer
+
+###
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+    "name": "Fernanda",
+    "creditCardNumber": "123456789",
+    "email": "mariafernanda@web.ufop.edu.br",
+    "password": "123456"
+}
+
+###
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+    "id": "fed60f5a-1796-4859-bb61-ff97dae4f259",
+    "name": "Maria ",
+    "creditCardNumber": "223456789",
+    "email": "maria@web.ufop.edu.br",
+    "password": "123456"
+}
+
+
+###
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+    "id": "fed60f5a-1796-4859-bb61-ff97dae4f259",
+    "name": "Maria Julia",
+    "creditCardNumber": "223456789",
+    "email": "maria@web.ufop.edu.br",
+    "newPassword": "123454"
+
+}
+
+###
+PUT http://localhost:3000/users/password
+Content-Type: application/json
+
+{
+    "id": "fed60f5a-1796-4859-bb61-ff97dae4f259",
+    "email": "mariajulia@web.ufop.edu.br",
+    "oldPassword": "123456",
+    "newPassword": "123454"
+}
+
+###
+DELETE http://localhost:3000/users/remove
+Content-Type: application/json
+
+{
+    "id": "aead34b6-73c4-4ffc-bab6-8ae95ade0e48"
+}
+
+###
+GET http://localhost:3000/ccn
+
+###
+POST  http://localhost:3000/ccn
+Content-Type: application/json
+
+{
+    "name": "HSBC"
+}
+
+###
+PUT http://localhost:3000/users/creditcard
+Content-Type: application/json
+
+{
+    "id": "fed60f5a-1796-4859-bb61-ff97dae4f259",
+    "creditCardNumber": "223456783",
+    "creditCardNetworkId": "57a76bf0-5f30-42cc-929f-abd1def4b800"
+
+
+}
