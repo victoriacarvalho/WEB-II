@@ -7,9 +7,7 @@ import br.ufop.edu.web.ticket.sales.model.TicketModel;
 import br.ufop.edu.web.ticket.sales.repository.EventRepository;
 import br.ufop.edu.web.ticket.sales.repository.EventTypeRepository;
 import br.ufop.edu.web.ticket.sales.repository.TicketRepository;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import org.springframework.beans.BeanUtils;
@@ -98,84 +96,6 @@ public class EventService {
         BeanUtils.copyProperties(eventModel, eventDTO);
         if (eventModel.getEventType() != null) {
             eventDTO.setEventTypeId(eventModel.getEventType().getId());
-        }
-        return eventDTO;
-    }
-}
-
-
-@Service
-public class EventService {
-
-    private final EventRepository eventRepository;
-    private final EventTypeRepository eventTypeRepository;
-
-    public EventService(EventRepository eventRepository, EventTypeRepository eventTypeRepository) {
-        this.eventRepository = eventRepository;
-        this.eventTypeRepository = eventTypeRepository;
-    }
-
-    public EventDTO createEvent(EventDTO eventDTO) {
-        EventModel eventModel = new EventModel();
-        BeanUtils.copyProperties(eventDTO, eventModel);
-
-        EventTypeModel eventType = eventTypeRepository.findById(eventDTO.getEventTypeId())
-                .orElseThrow(() -> new RuntimeException("Event type not found with ID: " + eventDTO.getEventTypeId()));
-
-        eventModel.setEventType(eventType);
-        eventModel = eventRepository.save(eventModel);
-
-        return convertToDTO(eventModel);
-    }
-
-    public List<EventDTO> getAllEvents() {
-        return eventRepository.findAll().stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
-    }
-
-    public EventDTO getEventById(Integer id) {
-        return eventRepository.findById(id)
-                .map(this::convertToDTO)
-                .orElse(null);
-    }
-
-    public EventDTO updateEvent(Integer id, EventDTO eventDTO) {
-        Optional<EventModel> existingEvent = eventRepository.findById(id);
-        if (existingEvent.isPresent()) {
-            EventModel eventModel = existingEvent.get();
-            BeanUtils.copyProperties(eventDTO, eventModel, "id");
-
-            EventTypeModel eventType = eventTypeRepository.findById(eventDTO.getEventTypeId())
-                    .orElseThrow(() -> new RuntimeException("Event type not found with ID: " + eventDTO.getEventTypeId()));
-
-            eventModel.setEventType(eventType);
-            eventModel = eventRepository.save(eventModel);
-
-            return convertToDTO(eventModel);
-        }
-        return null;
-    }
-
- @Transactional
-public void deleteEvent(Integer id) {
-    EventModel event = eventRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Event not found with ID: " + id));
-
-    List<TicketModel> ticketsToDelete = ticketRepository.findByEvent(event);
-
-    if (!ticketsToDelete.isEmpty()) {
-        ticketRepository.deleteAll(ticketsToDelete);
-    }
-
-    eventRepository.deleteById(id);
-}
-
-    private EventDTO convertToDTO(EventModel eventModel) {
-        EventDTO eventDTO = new EventDTO();
-        BeanUtils.copyProperties(eventModel, eventDTO);
-        if (eventModel.getEventType() != null) {
-            eventDTO.setEventTypeId(eventModel.getEventType().getId());            // eventDTO.setDescription(eventModel.getEventType().getDescription());
         }
         return eventDTO;
     }

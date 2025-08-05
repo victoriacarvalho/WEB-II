@@ -1,8 +1,6 @@
 package br.ufop.edu.web.ticket.user.controllers;
 
 import java.util.List;
-
-import org.hibernate.sql.Delete;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
