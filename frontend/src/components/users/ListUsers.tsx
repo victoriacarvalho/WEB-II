@@ -1,36 +1,16 @@
-import { useEffect, useState } from "react";
-import api from "../../services/api";
-
 interface UserInterface {
   id: string;
   name: string;
   email: string;
 }
 
-const ListUsers = () => {
-  const [users, setUsers] = useState<UserInterface[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+interface ListUsersProps {
+  users: UserInterface[];
+  loading: boolean;
+  error: string | null;
+}
 
-  useEffect(() => {
-    setLoading(true);
-    api("/api/users")
-      .then((response) => {
-        if (Array.isArray(response)) {
-          setUsers(response);
-        } else {
-          setError("A resposta da API de utilizadores não é uma lista válida.");
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-        setError("Falha ao carregar os utilizadores.");
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, []);
-
+const ListUsers = ({ users, loading, error }: ListUsersProps) => {
   if (loading) return <div>A carregar utilizadores...</div>;
   if (error) return <div className="error-message">{error}</div>;
 

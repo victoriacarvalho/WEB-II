@@ -1,6 +1,3 @@
-import { useEffect, useState } from "react";
-import api from "../../services/api";
-
 interface SaleInterface {
   id: number;
   userId: number;
@@ -8,30 +5,19 @@ interface SaleInterface {
   paymentStatus: string;
 }
 
-const ListSales = () => {
-  const [sales, setSales] = useState<SaleInterface[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+interface ListSalesProps {
+  sales: SaleInterface[];
+  loading: boolean;
+  error: string | null;
+  onStatusChange: (saleId: number, newStatus: string) => void;
+}
 
-  useEffect(() => {
-    setLoading(true);
-    api("/api/sales")
-      .then((response) => {
-        if (Array.isArray(response)) {
-          setSales(response);
-        } else {
-          setError("A resposta da API de vendas não é uma lista válida.");
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-        setError("Falha ao carregar as vendas.");
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, []);
-
+const ListSales = ({
+  sales,
+  loading,
+  error,
+  onStatusChange,
+}: ListSalesProps) => {
   if (loading) return <div>A carregar vendas...</div>;
   if (error) return <div className="error-message">{error}</div>;
 
@@ -47,12 +33,21 @@ const ListSales = () => {
               <strong>ID do Utilizador:</strong> {sale.userId}
             </p>
             <p>
-              <strong>Data da Venda:</strong>{" "}
-              {new Date(sale.saleDate).toLocaleString()}
+              <strong>Data:</strong> {new Date(sale.saleDate).toLocaleString()}
             </p>
-            <p>
-              <strong>Status:</strong> {sale.paymentStatus}
-            </p>
+            <div className="form-group">
+              <label htmlFor={`status-select-${sale.id}`}>
+                <strong>Status:</strong>
+              </label>
+              <select
+                id={`status-select-${sale.id}`}
+                value={sale.paymentStatus}
+                onChange={(e) => onStatusChange(sale.id, e.target.value)}>
+                <option value="PENDENTE">Pendente</option>
+                <option value="PAGO">Pago</option>
+                <option value="CANCELADO">Cancelado</option>
+              </select>
+            </div>
           </div>
         ))
       ) : (

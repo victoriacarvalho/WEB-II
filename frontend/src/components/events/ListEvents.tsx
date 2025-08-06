@@ -1,7 +1,3 @@
-import { useEffect, useState } from "react";
-import api from "../../services/api";
-
-// Interface para definir a estrutura de um objeto de evento
 interface EventInterface {
   id: number;
   description: string;
@@ -11,31 +7,13 @@ interface EventInterface {
   ticketPrice: number;
 }
 
-const ListEvents = () => {
-  const [events, setEvents] = useState<EventInterface[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+interface ListEventsProps {
+  events: EventInterface[];
+  loading: boolean;
+  error: string | null;
+}
 
-  useEffect(() => {
-    setLoading(true);
-    // O gateway encaminhará /api/events para o sales-service
-    api("/api/events")
-      .then((response) => {
-        if (Array.isArray(response)) {
-          setEvents(response);
-        } else {
-          setError("A resposta da API de eventos não é uma lista válida.");
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-        setError("Falha ao carregar os eventos.");
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, []);
-
+const ListEvents = ({ events, loading, error }: ListEventsProps) => {
   if (loading) return <div>A carregar eventos...</div>;
   if (error) return <div className="error-message">{error}</div>;
 

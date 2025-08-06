@@ -1,14 +1,18 @@
 import { useState } from "react";
 import api from "../../services/api";
 
-const CreateEvent = () => {
+interface CreateEventProps {
+  onEventCreated: () => void;
+}
+
+const CreateEvent = ({ onEventCreated }: CreateEventProps) => {
+  // ... (o resto do código do formulário permanece igual, mas com a nova prop)
   const [description, setDescription] = useState("");
   const [eventDate, setEventDate] = useState("");
   const [salesStartDate, setSalesStartDate] = useState("");
   const [salesEndDate, setSalesEndDate] = useState("");
   const [ticketPrice, setTicketPrice] = useState("");
   const [eventTypeId, setEventTypeId] = useState("");
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -31,12 +35,12 @@ const CreateEvent = () => {
     try {
       await api("/api/events", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
       setSuccessMessage("Evento cadastrado com sucesso!");
+      onEventCreated(); // Avisa o App.tsx
+
       // Limpar formulário
       setDescription("");
       setEventDate("");
@@ -45,21 +49,21 @@ const CreateEvent = () => {
       setTicketPrice("");
       setEventTypeId("");
     } catch (err) {
-      setError(
-        "Erro ao cadastrar evento. Verifique os dados e tente novamente."
-      );
+      setError("Erro ao cadastrar evento.");
       console.error(err);
     } finally {
       setLoading(false);
     }
   };
 
+  // O JSX do formulário continua o mesmo
   return (
     <div className="form-container">
       <h2>Cadastrar Novo Evento</h2>
       {error && <p className="error-message">{error}</p>}
       {successMessage && <p className="success-message">{successMessage}</p>}
       <form onSubmit={handleCreateEvent}>
+        {/* ... todos os form-groups ... */}
         <div className="form-group">
           <label htmlFor="description">Descrição do Evento:</label>
           <input

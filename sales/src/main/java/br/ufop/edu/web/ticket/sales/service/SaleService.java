@@ -13,7 +13,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors; // Certifique-se de que esta importação existe
+import java.util.stream.Collectors; 
+import br.ufop.edu.web.ticket.sales.dto.UpdateSaleStatusDTO;
 
 @Service
 public class SaleService {
@@ -28,7 +29,6 @@ public class SaleService {
         this.eventRepository = eventRepository;
     }
 
-    // MÉTODO ADICIONADO
     public List<SaleDTO> getAllSales() {
         return saleRepository.findAll()
                 .stream()
@@ -76,5 +76,14 @@ public class SaleService {
         SaleDTO saleDTO = new SaleDTO();
         BeanUtils.copyProperties(saleModel, saleDTO);
         return saleDTO;
+    }
+
+     public SaleDTO updateSaleStatus(Integer saleId, UpdateSaleStatusDTO statusDTO) {
+        SaleModel saleModel = saleRepository.findById(saleId)
+                .orElseThrow(() -> new RuntimeException("Venda não encontrada com o ID: " + saleId));
+
+        saleModel.setPaymentStatus(statusDTO.getPaymentStatus());
+        SaleModel updatedSale = saleRepository.save(saleModel);
+        return convertSaleModelToDTO(updatedSale);
     }
 }
