@@ -6,12 +6,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List; // Certifique-se de que esta importação existe
+
 @RestController
 @RequestMapping("/sales")
 public class SaleController {
 
     @Autowired
     private SaleService saleService;
+
+    // MÉTODO ADICIONADO
+    @GetMapping
+    public ResponseEntity<List<SaleDTO>> getAllSales() {
+        List<SaleDTO> sales = saleService.getAllSales();
+        return ResponseEntity.ok(sales);
+    }
 
     @PostMapping
     public ResponseEntity<SaleDTO> createSale(@RequestBody SaleDTO saleDTO) {

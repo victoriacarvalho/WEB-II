@@ -1,42 +1,198 @@
+/* --- TEMA ESCURO - GERAL & RESET BÁSICO --- */
+:root {
+  --primary-color: #0d6efd;
+  --primary-hover-color: #3d8bfd;
+  --background-primary: #1a1a1a;
+  --background-secondary: #242424;
+  --background-card: #2c2c2c;
+  --text-primary: #f8f9fa;
+  --text-secondary: #adb5bd;
+  --border-color: #495057;
+  --success-color: #28a745;
+  --error-color: #dc3545;
+  --shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  background-color: var(--background-primary);
+  color: var(--text-primary);
+}
+
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
+  max-width: 960px;
+  margin: 2rem auto;
   padding: 2rem;
+  background-color: var(--background-secondary);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+}
+
+h1,
+h2 {
+  color: var(--text-primary);
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+h1 {
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 1rem;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+h2 {
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+/* --- ESTRUTURA DE ABAS (TABS) --- */
+.tabs-container {
+  width: 100%;
 }
 
-.card {
-  padding: 2em;
+.tabs-nav {
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  margin-bottom: 1.5rem;
 }
 
-.read-the-docs {
-  color: #888;
+.tab-button {
+  padding: 12px 24px;
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s ease-in-out;
+}
+
+.tab-button:hover {
+  color: var(--primary-hover-color);
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.tab-button.active {
+  color: var(--primary-color);
+  border-bottom-color: var(--primary-color);
+}
+
+.tab-content {
+  padding-top: 1rem;
+}
+
+/* --- ESTILOS DAS LISTAS (UTILIZADORES E VENDAS) --- */
+.list-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.list-item {
+  border: 1px solid var(--border-color);
+  padding: 1.5rem;
+  border-radius: 8px;
+  background-color: var(--background-card);
+  box-shadow: var(--shadow);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.list-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.list-item p {
+  margin: 0.5rem 0;
+  color: var(--text-secondary);
+  word-break: break-all;
+}
+
+.list-item p strong {
+  color: var(--text-primary);
+}
+
+/* --- ESTILOS DO FORMULÁRIO (CADASTRAR EVENTO) --- */
+.form-container {
+  background-color: var(--background-card);
+  padding: 2rem;
+  border-radius: 8px;
+  max-width: 600px;
+  margin: 0 auto;
+  border: 1px solid var(--border-color);
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+  background-color: #3c3c3c;
+  color: var(--text-primary);
+  box-sizing: border-box;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25);
+}
+
+.form-button {
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.form-button:hover:not(:disabled) {
+  background-color: var(--primary-hover-color);
+}
+
+.form-button:disabled {
+  background-color: #555;
+  color: #999;
+  cursor: not-allowed;
+}
+
+/* --- MENSAGENS DE FEEDBACK --- */
+.error-message {
+  color: #f8d7da;
+  background-color: rgba(220, 53, 69, 0.2);
+  border: 1px solid var(--error-color);
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.success-message {
+  color: #d4edda;
+  background-color: rgba(40, 167, 69, 0.2);
+  border: 1px solid var(--success-color);
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 1.5rem;
+  text-align: center;
 }

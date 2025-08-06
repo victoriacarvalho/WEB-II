@@ -12,25 +12,16 @@ public class GatewayApiConfig {
     public RouteLocator gatewayRouter(RouteLocatorBuilder builder) {
 
         return builder.routes()
-            .route("users-api",
-                p -> p.path("/api/users")
-                .filters(f -> f.rewritePath("/api/users", "/users"))
-                .uri("lb://users-service")
-            )                   
-            .route("users",
-                p -> p.path("/users")
-                .uri("lb://users-service")
-            )               
-            .route("users-segment",
-                p -> p.path("/users/**")
-                .uri("lb://users-service")
-            )            
-            .route("sales",
-                p -> p.path("/sales/**")
-                .uri("lb://sales-service")
-            )
+            // Rota para o serviço de utilizadores
+            .route("users-service", r -> r.path("/api/users/**")
+                .filters(f -> f.rewritePath("/api/users(?<segment>/?.*)", "/users${segment}"))
+                .uri("lb://users-service"))
+            
+            // Rota para o serviço de vendas
+            .route("sales-service", r -> r.path("/api/sales/**", "/api/events/**")
+                .filters(f -> f.rewritePath("/api/(?<service>sales|events)(?<segment>/?.*)", "/${service}${segment}"))
+                .uri("lb://sales-service"))
+            
             .build();
-
     }
-
 }

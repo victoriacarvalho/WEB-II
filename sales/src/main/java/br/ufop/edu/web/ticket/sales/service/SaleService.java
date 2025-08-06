@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors; // Certifique-se de que esta importação existe
 
 @Service
 public class SaleService {
@@ -25,6 +26,14 @@ public class SaleService {
         this.saleRepository = saleRepository;
         this.ticketRepository = ticketRepository;
         this.eventRepository = eventRepository;
+    }
+
+    // MÉTODO ADICIONADO
+    public List<SaleDTO> getAllSales() {
+        return saleRepository.findAll()
+                .stream()
+                .map(this::convertSaleModelToDTO)
+                .collect(Collectors.toList());
     }
 
     public SaleDTO createSale(SaleDTO saleDTO) {
@@ -43,19 +52,13 @@ public class SaleService {
             }
         }
 
-        SaleDTO createdSale = new SaleDTO();
-        BeanUtils.copyProperties(saleModel, createdSale);
-        return createdSale;
+        return convertSaleModelToDTO(saleModel);
     }
 
     public SaleDTO getSaleById(Integer id) {
-        Optional<SaleModel> saleModel = saleRepository.findById(id);
-        if (saleModel.isPresent()) {
-            SaleDTO saleDTO = new SaleDTO();
-            BeanUtils.copyProperties(saleModel.get(), saleDTO);
-            return saleDTO;
-        }
-        return null;
+        return saleRepository.findById(id)
+                .map(this::convertSaleModelToDTO)
+                .orElse(null);
     }
 
      public void deleteSale(Integer id) {
@@ -68,5 +71,10 @@ public class SaleService {
 
             saleRepository.delete(sale);
         }
+    }
+    private SaleDTO convertSaleModelToDTO(SaleModel saleModel) {
+        SaleDTO saleDTO = new SaleDTO();
+        BeanUtils.copyProperties(saleModel, saleDTO);
+        return saleDTO;
     }
 }

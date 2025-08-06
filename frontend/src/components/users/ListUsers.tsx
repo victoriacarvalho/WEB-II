@@ -8,32 +8,51 @@ interface UserInterface {
 }
 
 const ListUsers = () => {
-  // Hook: useState
   const [users, setUsers] = useState<UserInterface[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // Hook: useEffect
   useEffect(() => {
+    setLoading(true);
     api("/api/users")
       .then((response) => {
-        console.log(response);
-        setUsers(response);
+        if (Array.isArray(response)) {
+          setUsers(response);
+        } else {
+          setError("A resposta da API de utilizadores não é uma lista válida.");
+        }
       })
-      .catch((error) => console.error(error));
+      .catch((err) => {
+        console.error(err);
+        setError("Falha ao carregar os utilizadores.");
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
 
-  return (
-    <div>
-      <h2>Lista de usuários</h2>
+  if (loading) return <div>A carregar utilizadores...</div>;
+  if (error) return <div className="error-message">{error}</div>;
 
-      <div>
-        {users.map((user) => (
-          <div key={user.id}>
-            <p>{user.id}</p>
-            <p>{user.name}</p>
-            <p>{user.email}</p>
+  return (
+    <div className="list-container">
+      {users.length > 0 ? (
+        users.map((user) => (
+          <div key={user.id} className="list-item">
+            <p>
+              <strong>ID:</strong> {user.id}
+            </p>
+            <p>
+              <strong>Nome:</strong> {user.name}
+            </p>
+            <p>
+              <strong>Email:</strong> {user.email}
+            </p>
           </div>
-        ))}
-      </div>
+        ))
+      ) : (
+        <p>Nenhum utilizador encontrado.</p>
+      )}
     </div>
   );
 };
