@@ -10,13 +10,13 @@ import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
 @Configuration
 public class CorsApiConfig {
-    
-    @Bean //instancia de um elemento a ser definido como config e injetado no contexto do Spring
-    CorsWebFilter corsWebFilter(){
+
+    // https://docs.spring.io/spring-framework/reference/web/webflux-cors.html#webflux-cors-webfilter
+    @Bean
+    CorsWebFilter corsWebFilter() {
 
         CorsConfiguration config = new CorsConfiguration();
 
-        //funciona como um filtro de CORS
         config.setAllowCredentials(true);
         config.setAllowedOrigins(List.of("http://localhost:5173"));
         config.setAllowedHeaders(List.of("*"));
@@ -26,6 +26,7 @@ public class CorsApiConfig {
         source.registerCorsConfiguration("/**", config);
 
         return new CorsWebFilter(source);
+
     }
     
 }
