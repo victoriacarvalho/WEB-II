@@ -59,7 +59,7 @@
       "projectName": "gateway",
       "args": "",
       "envFile": "${workspaceFolder}/.env",
-      "vmArgs": " -Dcom.sun.management.jmxremote"
+      "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=52674 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=gateway"
     },
     {
       "type": "java",
@@ -68,6 +68,17 @@
       "cwd": "${workspaceFolder}",
       "mainClass": "br.edu.ufop.web.notifications.NotificationsApplication",
       "projectName": "notifications",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env",
+      "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=52675 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=notifications"
+    },
+    {
+      "type": "java",
+      "name": "Spring Boot-SalesApplication<sales>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "br.edu.ufop.web.ticket.sales.SalesApplication",
+      "projectName": "sales",
       "args": "",
       "envFile": "${workspaceFolder}/.env"
     }

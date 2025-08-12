@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class GatewayApiConfig {
-
+    
     @Value("${gateway.frontend.uri}")
     private String uriFrontendService = "http://localhost:1234";
 
@@ -17,28 +17,32 @@ public class GatewayApiConfig {
 
         return builder.routes()
             .route("users-api",
-                p -> p.path("/api/users/**")
-                .filters(f -> f.rewritePath("/api/users(?<segment>/?.*)", "/users${segment}"))
+                p -> p.path("/api/users")
+                .filters(f -> f.rewritePath("/api/users", "/users"))
                 .uri("lb://users-service")
-            )
-            .route("events-api",
-                p -> p.path("/api/events/**")
-                .filters(f -> f.rewritePath("/api/events(?<segment>/?.*)", "/events${segment}"))
+            )                   
+            .route("users",
+                p -> p.path("/users")
+                .uri("lb://users-service")
+            )               
+            .route("users-segment",
+                p -> p.path("/users/**")
+                .uri("lb://users-service")
+            )            
+            .route("sales",
+                p -> p.path("/sales/**")
                 .uri("lb://sales-service")
-            )
-            .route("sales-api",
-                p -> p.path("/api/sales/**")
-                .filters(f -> f.rewritePath("/api/sales(?<segment>/?.*)", "/sales${segment}"))
-                .uri("lb://sales-service")
-            )
+            )            
             .route("notifications",
                 p -> p.path("/notifications/**")
                 .uri("lb://notifications-service")
-            )
+            )            
             .route("frontend",
                 p -> p.path("/**")
                 .uri(this.uriFrontendService)
             )
             .build();
+
     }
+
 }
