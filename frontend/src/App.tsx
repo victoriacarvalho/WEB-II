@@ -1,9 +1,9 @@
-// victoriacarvalho/web-ii/WEB-II-b263f27ce3a273a4089485c48fe2471c7d041967/frontend/src/App.tsx
 import { useState, useEffect, useCallback } from "react";
 import "./App.css";
 import api from "./services/api";
 
 import ListUsers from "./components/users/ListUsers";
+import CreateUser from "./components/users/CreateUser";
 import CreateEvent from "./components/events/CreateEvent";
 import ListSales from "./components/sales/ListSales";
 import ListEvents from "./components/events/ListEvents";
@@ -15,7 +15,7 @@ interface UserInterface {
   email: string;
 }
 interface EventInterface {
-  id: number;
+  id: string;
   description: string;
   eventDate: string;
   salesStartDate: string;
@@ -23,14 +23,15 @@ interface EventInterface {
   ticketPrice: number;
 }
 interface SaleInterface {
-  id: number;
-  userId: number;
+  id: string;
+  userId: string;
   saleDate: string;
   paymentStatus: string;
+  eventDTO: EventInterface;
 }
 
 function App() {
-  const [activeTab, setActiveTab] = useState("users");
+  const [activeTab, setActiveTab] = useState("list-users");
 
   const [users, setUsers] = useState<UserInterface[]>([]);
   const [events, setEvents] = useState<EventInterface[]>([]);
@@ -101,6 +102,11 @@ function App() {
     fetchSales();
   }, [fetchUsers, fetchEvents, fetchSales]);
 
+  const handleUserCreated = () => {
+    fetchUsers();
+    setActiveTab("list-users");
+  };
+
   const handleSaleCreated = () => {
     fetchSales();
     setActiveTab("sales");
@@ -111,29 +117,9 @@ function App() {
     setActiveTab("list-events");
   };
 
-  const handleStatusChange = async (saleId: number, newStatus: string) => {
-    const originalSales = [...sales];
-    setSales((currentSales) =>
-      currentSales.map((s) =>
-        s.id === saleId ? { ...s, paymentStatus: newStatus } : s
-      )
-    );
-    try {
-      await api(`/api/sales/${saleId}/status`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ paymentStatus: newStatus }),
-      });
-    } catch (err) {
-      console.error("Falha ao atualizar o status:", err);
-      alert("Falha ao atualizar o status. A alteração será desfeita.");
-      setSales(originalSales); // Reverte a alteração em caso de erro
-    }
-  };
-
   const renderContent = () => {
     switch (activeTab) {
-      case "users":
+      case "list-users":
         return (
           <ListUsers
             users={users}
@@ -141,6 +127,8 @@ function App() {
             error={error.users}
           />
         );
+      case "create-user":
+        return <CreateUser onUserCreated={handleUserCreated} />;
       case "list-events":
         return (
           <ListEvents
@@ -161,13 +149,7 @@ function App() {
           />
         );
       case "create-sale":
-        return (
-          <CreateSale
-            users={users}
-            events={events}
-            onSaleCreated={handleSaleCreated}
-          />
-        );
+        return <CreateSale onSaleCreated={handleSaleCreated} />;
       default:
         return (
           <ListUsers
@@ -184,9 +166,16 @@ function App() {
       <h1>Sistema de Vendas de Tickets</h1>
       <nav className="tabs-nav">
         <button
-          className={`tab-button ${activeTab === "users" ? "active" : ""}`}
-          onClick={() => setActiveTab("users")}>
+          className={`tab-button ${activeTab === "list-users" ? "active" : ""}`}
+          onClick={() => setActiveTab("list-users")}>
           Utilizadores
+        </button>
+        <button
+          className={`tab-button ${
+            activeTab === "create-user" ? "active" : ""
+          }`}
+          onClick={() => setActiveTab("create-user")}>
+          Cadastrar Utilizador
         </button>
         <button
           className={`tab-button ${

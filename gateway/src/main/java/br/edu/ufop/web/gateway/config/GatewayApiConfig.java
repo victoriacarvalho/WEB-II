@@ -15,29 +15,31 @@ public class GatewayApiConfig {
     @Bean
     public RouteLocator gatewayRouter(RouteLocatorBuilder builder) {
         return builder.routes()
-            // Rota para o User Service
+            // Rota para buscar as redes de cartões (NOVO)
+            .route("ccn-service", r -> r.path("/api/ccn/**")
+                .filters(f -> f.rewritePath("/api/ccn(?<segment>/?.*)", "/ccn${segment}"))
+                .uri("lb://USERS-SERVICE"))
+
+            // Rota para os Utilizadores
             .route("users-service", r -> r.path("/api/users/**")
                 .filters(f -> f.rewritePath("/api/users(?<segment>/?.*)", "/users${segment}"))
                 .uri("lb://USERS-SERVICE"))
 
-            // Rota para o Sales Service (para os endpoints de /events)
+            // Rota para os Eventos (aponta para o sales-service)
             .route("sales-service-events", r -> r.path("/api/events/**")
                 .filters(f -> f.rewritePath("/api/events(?<segment>/?.*)", "/sales/events${segment}"))
                 .uri("lb://SALES-SERVICE"))
 
-            // Rota para o Sales Service (para os endpoints de /sales)
+            // Rota para as Vendas
             .route("sales-service-sales", r -> r.path("/api/sales/**")
                 .filters(f -> f.rewritePath("/api/sales(?<segment>/?.*)", "/sales${segment}"))
                 .uri("lb://SALES-SERVICE"))
 
-            // Rota para o Notifications Service
+            // Rota para as Notificações
             .route("notifications-service", r -> r.path("/api/notifications/**")
                 .filters(f -> f.rewritePath("/api/notifications(?<segment>/?.*)", "/notifications${segment}"))
                 .uri("lb://NOTIFICATIONS-SERVICE"))
-
-            // Rota de fallback para o Frontend (deve ser a última)
-            .route("frontend", r -> r.path("/**")
-                .uri(uriFrontendService))
+                
             .build();
     }
 }
