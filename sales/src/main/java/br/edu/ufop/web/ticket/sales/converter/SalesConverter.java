@@ -16,7 +16,7 @@ public class SalesConverter {
             .userId(userId)
             .eventModel(event)
             .saleDate(LocalDateTime.now())
-            .saleStatus(EnumSaleStatusType.PAGO) 
+            .saleStatus(EnumSaleStatusType.PAGO)
             .build();
     }
 

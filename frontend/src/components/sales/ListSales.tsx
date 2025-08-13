@@ -1,15 +1,21 @@
+interface EventInterface {
+  id: string;
+  description: string;
+}
+
 interface SaleInterface {
-  id: number;
-  userId: number;
+  id: string;
+  userId: string;
   saleDate: string;
-  paymentStatus: string;
+  saleStatus: string; // <-- CORRIGIDO AQUI
+  eventDTO: EventInterface;
 }
 
 interface ListSalesProps {
   sales: SaleInterface[];
   loading: boolean;
   error: string | null;
-  onStatusChange: (saleId: number, newStatus: string) => void;
+  onStatusChange: (saleId: string, newStatus: string) => void;
 }
 
 const ListSales = ({
@@ -27,6 +33,9 @@ const ListSales = ({
         sales.map((sale) => (
           <div key={sale.id} className="list-item">
             <p>
+              <strong>Evento:</strong> {sale.eventDTO.description}
+            </p>
+            <p>
               <strong>ID da Venda:</strong> {sale.id}
             </p>
             <p>
@@ -41,11 +50,12 @@ const ListSales = ({
               </label>
               <select
                 id={`status-select-${sale.id}`}
-                value={sale.paymentStatus}
+                value={sale.saleStatus} // <-- CORRIGIDO AQUI
                 onChange={(e) => onStatusChange(sale.id, e.target.value)}>
-                <option value="PENDENTE">Pendente</option>
+                <option value="EM_ABERTO">Em Aberto</option>
                 <option value="PAGO">Pago</option>
                 <option value="CANCELADO">Cancelado</option>
+                <option value="ESTORNADO">Estornado</option>
               </select>
             </div>
           </div>

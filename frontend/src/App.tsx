@@ -26,17 +26,15 @@ interface SaleInterface {
   id: string;
   userId: string;
   saleDate: string;
-  paymentStatus: string;
+  saleStatus: string;
   eventDTO: EventInterface;
 }
 
 function App() {
   const [activeTab, setActiveTab] = useState("list-users");
-
   const [users, setUsers] = useState<UserInterface[]>([]);
   const [events, setEvents] = useState<EventInterface[]>([]);
   const [sales, setSales] = useState<SaleInterface[]>([]);
-
   const [loading, setLoading] = useState({
     users: true,
     events: true,
@@ -48,6 +46,7 @@ function App() {
     sales: null,
   });
 
+  // Funções de busca de dados (fetchUsers, fetchEvents, fetchSales) permanecem iguais
   const fetchUsers = useCallback(async () => {
     setLoading((prev) => ({ ...prev, users: true }));
     try {
@@ -57,7 +56,7 @@ function App() {
       console.error("Erro ao carregar utilizadores:", err);
       setError((prev) => ({
         ...prev,
-        users: "Falha ao carregar utilizadores. Verifique o console.",
+        users: "Falha ao carregar utilizadores.",
       }));
     } finally {
       setLoading((prev) => ({ ...prev, users: false }));
@@ -71,10 +70,7 @@ function App() {
       setEvents(Array.isArray(response) ? response : []);
     } catch (err) {
       console.error("Erro ao carregar eventos:", err);
-      setError((prev) => ({
-        ...prev,
-        events: "Falha ao carregar eventos. Verifique o console.",
-      }));
+      setError((prev) => ({ ...prev, events: "Falha ao carregar eventos." }));
     } finally {
       setLoading((prev) => ({ ...prev, events: false }));
     }
@@ -87,10 +83,7 @@ function App() {
       setSales(Array.isArray(response) ? response : []);
     } catch (err) {
       console.error("Erro ao carregar vendas:", err);
-      setError((prev) => ({
-        ...prev,
-        sales: "Falha ao carregar vendas. Verifique o console.",
-      }));
+      setError((prev) => ({ ...prev, sales: "Falha ao carregar vendas." }));
     } finally {
       setLoading((prev) => ({ ...prev, sales: false }));
     }
@@ -115,6 +108,26 @@ function App() {
   const handleEventCreated = () => {
     fetchEvents();
     setActiveTab("list-events");
+  };
+
+  const handleStatusChange = async (saleId: string, newStatus: string) => {
+    const originalSales = [...sales];
+    setSales((currentSales) =>
+      currentSales.map((s) =>
+        s.id === saleId ? { ...s, saleStatus: newStatus } : s
+      )
+    );
+    try {
+      await api(`/api/sales/${saleId}/status`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ saleStatus: newStatus }),
+      });
+    } catch (err) {
+      console.error("Falha ao atualizar o status:", err);
+      alert("Falha ao atualizar o status. A alteração será desfeita.");
+      setSales(originalSales);
+    }
   };
 
   const renderContent = () => {
