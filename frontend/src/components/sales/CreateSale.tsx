@@ -1,30 +1,53 @@
-// victoriacarvalho/web-ii/WEB-II-b263f27ce3a273a4089485c48fe2471c7d041967/frontend/src/components/sales/CreateSale.tsx
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import api from "../../services/api";
 
 interface UserInterface {
-  id: string;
+  id: string; // O ID do utilizador é um UUID (string)
   name: string;
+  email: string;
 }
+
 interface EventInterface {
-  id: number;
+  id: string; // O ID do evento também é um UUID (string)
   description: string;
 }
 
 interface CreateSaleProps {
-  users: UserInterface[];
-  events: EventInterface[];
   onSaleCreated: () => void;
 }
 
-const CreateSale = ({ users, events, onSaleCreated }: CreateSaleProps) => {
+const CreateSale = ({ onSaleCreated }: CreateSaleProps) => {
+  // Estados para guardar os dados dos dropdowns
+  const [users, setUsers] = useState<UserInterface[]>([]);
+  const [events, setEvents] = useState<EventInterface[]>([]);
+
+  // Estados para os valores selecionados no formulário
   const [selectedUserId, setSelectedUserId] = useState("");
   const [selectedEventId, setSelectedEventId] = useState("");
-  const [paymentStatus, setPaymentStatus] = useState("PENDENTE");
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true); // Inicia a carregar os dados
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+
+  // Efeito para carregar utilizadores e eventos quando o componente monta
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const usersResponse = await api("/api/users");
+        const eventsResponse = await api("/api/events");
+        setUsers(Array.isArray(usersResponse) ? usersResponse : []);
+        setEvents(Array.isArray(eventsResponse) ? eventsResponse : []);
+      } catch (err) {
+        console.error("Falha ao carregar dados para o formulário:", err);
+        setError("Não foi possível carregar os utilizadores e eventos.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
 
   const handleCreateSale = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,10 +60,8 @@ const CreateSale = ({ users, events, onSaleCreated }: CreateSaleProps) => {
     setSuccessMessage(null);
 
     const data = {
-      // CORREÇÃO CRÍTICA: Converter o ID do utilizador para número
-      userId: parseInt(selectedUserId, 10),
-      paymentStatus: paymentStatus,
-      eventIds: [parseInt(selectedEventId, 10)],
+      userId: selectedUserId,
+      eventId: selectedEventId,
     };
 
     try {
@@ -51,12 +72,10 @@ const CreateSale = ({ users, events, onSaleCreated }: CreateSaleProps) => {
       });
       setSuccessMessage("Venda cadastrada com sucesso!");
 
-      // Limpa o formulário e navega após um breve intervalo
       setTimeout(() => {
         onSaleCreated();
         setSelectedUserId("");
         setSelectedEventId("");
-        setPaymentStatus("PENDENTE");
       }, 1500);
     } catch (err) {
       setError("Erro ao cadastrar a venda. Verifique o console para detalhes.");
@@ -65,6 +84,10 @@ const CreateSale = ({ users, events, onSaleCreated }: CreateSaleProps) => {
       setLoading(false);
     }
   };
+
+  if (loading && (users.length === 0 || events.length === 0)) {
+    return <div>A carregar dados do formulário...</div>;
+  }
 
   return (
     <div className="form-container">
@@ -104,18 +127,6 @@ const CreateSale = ({ users, events, onSaleCreated }: CreateSaleProps) => {
                 {event.description}
               </option>
             ))}
-          </select>
-        </div>
-        <div className="form-group">
-          <label htmlFor="status-select">Status do Pagamento:</label>
-          <select
-            id="status-select"
-            value={paymentStatus}
-            onChange={(e) => setPaymentStatus(e.target.value)}
-            required>
-            <option value="PENDENTE">Pendente</option>
-            <option value="PAGO">Pago</option>
-            <option value="CANCELADO">Cancelado</option>
           </select>
         </div>
         <button type="submit" className="form-button" disabled={loading}>

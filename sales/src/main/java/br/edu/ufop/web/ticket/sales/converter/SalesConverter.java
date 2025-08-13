@@ -1,53 +1,34 @@
 package br.edu.ufop.web.ticket.sales.converter;
 
-import br.edu.ufop.web.ticket.sales.domain.EventDomain;
-import br.edu.ufop.web.ticket.sales.domain.SaleDomain;
-import br.edu.ufop.web.ticket.sales.dtos.sales.CreateSaleDTO;
 import br.edu.ufop.web.ticket.sales.dtos.sales.SaleDTO;
+import br.edu.ufop.web.ticket.sales.enums.EnumSaleStatusType;
+import br.edu.ufop.web.ticket.sales.model.EventModel;
 import br.edu.ufop.web.ticket.sales.model.SaleModel;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import java.time.LocalDateTime;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SalesConverter {
-    
-    public static SaleDomain toSaleDomain(CreateSaleDTO createSaleDTO) {
 
-        EventDomain eventDomain = EventDomain.builder()
-            .id(createSaleDTO.getEventId())
-            .build();
-
-        return SaleDomain.builder()
-            .userId(createSaleDTO.getUserId())
-            .eventDomain(eventDomain)
-            .build();
-
-    }
-
-    public static SaleModel toSaleModel(SaleDomain saleDomain) {
-
+    public static SaleModel toModel(EventModel event, java.util.UUID userId) {
         return SaleModel.builder()
-            .id(saleDomain.getId())
-            .userId(saleDomain.getUserId())
-            .eventModel(EventConverter.toEventModel(saleDomain.getEventDomain()))
-            .saleDate(saleDomain.getSaleDate())
-            .saleStatus(saleDomain.getSaleStatus())
+            .userId(userId)
+            .eventModel(event)
+            .saleDate(LocalDateTime.now())
+            .saleStatus(EnumSaleStatusType.PAGO) 
             .build();
-
     }
 
-    public static SaleDTO toSaleDTO(SaleModel saleModel) {
-
+    public static SaleDTO toDTO(SaleModel saleModel) {
         return SaleDTO.builder()
             .id(saleModel.getId())
             .userId(saleModel.getUserId())
-            .eventDTO(EventConverter.toEventDTO(saleModel.getEventModel()))
+            .eventDTO(EventConverter.toDTO(saleModel.getEventModel()))
             .saleDate(saleModel.getSaleDate())
             .saleStatus(saleModel.getSaleStatus())
             .createdAt(saleModel.getCreatedAt())
             .updatedAt(saleModel.getUpdatedAt())
             .build();
-
     }
-
 }
