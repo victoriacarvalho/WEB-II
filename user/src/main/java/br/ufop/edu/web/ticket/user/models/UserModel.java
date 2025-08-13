@@ -41,11 +41,11 @@ public class UserModel {
     private String email;
     private String password;
 
-    @Column(nullable = true) // o padrao é ser nulo // false - not null
+    @Column(nullable = true) // true - default; false - not null
     private String city;    
 
-    @ManyToOne // um user so tem um único tipo de cartão definindo
-    @JoinColumn(name = "credit_card_network_id") // atributo que será criado na tabela
+    @ManyToOne
+    @JoinColumn(name = "credit_card_network_id")
     private CreditCardNetworkModel creditCardNetworkModel;
 
     private EnumUserType userType;

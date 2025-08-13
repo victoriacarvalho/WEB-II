@@ -1,5 +1,6 @@
 package br.ufop.edu.web.ticket.user.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -148,7 +149,7 @@ public class UserService {
             return null;
         }
 
-       Optional<CreditCardNetworkModel> optionalCCN =
+        Optional<CreditCardNetworkModel> optionalCCN =
             creditCardNetworkRepository.findById(updateUserCreditCardDTO.creditCardNetworkId());
 
         if (optionalCCN.isEmpty()) {

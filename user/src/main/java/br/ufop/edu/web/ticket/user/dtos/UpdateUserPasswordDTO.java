@@ -12,9 +12,10 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateUserPasswordDTO {
-
+    
     private UUID id;
     private String email;
+
     private String oldPassword;
     private String newPassword;
 

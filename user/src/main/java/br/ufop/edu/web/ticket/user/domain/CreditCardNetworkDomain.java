@@ -18,6 +18,4 @@ public class CreditCardNetworkDomain {
     private UUID id;
     private String name;
 
-    
-
 }

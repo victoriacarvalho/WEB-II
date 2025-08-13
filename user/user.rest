@@ -15,35 +15,20 @@ POST http://localhost:3000/users
 Content-Type: application/json
 
 {
-    "name": "Fernanda",
+    "name": "Hugo",
     "creditCardNumber": "123456789",
-    "email": "mariafernanda@web.ufop.edu.br",
+    "email": "hugo@web.ufop.edu.br",
     "password": "123456"
 }
 
 ###
-POST http://localhost:3000/users
+PUT http://localhost:3000/users
 Content-Type: application/json
 
 {
-    "id": "fed60f5a-1796-4859-bb61-ff97dae4f259",
-    "name": "Maria ",
-    "creditCardNumber": "223456789",
-    "email": "maria@web.ufop.edu.br",
-    "password": "123456"
-}
-
-
-###
-POST http://localhost:3000/users
-Content-Type: application/json
-
-{
-    "id": "fed60f5a-1796-4859-bb61-ff97dae4f259",
-    "name": "Maria Julia",
-    "creditCardNumber": "223456789",
-    "email": "maria@web.ufop.edu.br",
-    "newPassword": "123454"
+    "id": "02c95281-bfa8-4859-93dc-1508ed511901",
+    "name": "Hugo Oliveira",
+    "creditCardNumber": "987654321",
 
 }
 
@@ -52,10 +37,11 @@ PUT http://localhost:3000/users/password
 Content-Type: application/json
 
 {
-    "id": "fed60f5a-1796-4859-bb61-ff97dae4f259",
-    "email": "mariajulia@web.ufop.edu.br",
+    "id": "02c95281-bfa8-4859-93dc-1508ed511901",
+    "email": "hugo@web.ufop.edu.br",
     "oldPassword": "123456",
-    "newPassword": "123454"
+    "newPassword": "654321"
+
 }
 
 ###
@@ -63,18 +49,19 @@ DELETE http://localhost:3000/users/remove
 Content-Type: application/json
 
 {
-    "id": "aead34b6-73c4-4ffc-bab6-8ae95ade0e48"
+    "id": "02c95281-bfa8-4859-93dc-1508ed511901"
 }
 
 ###
+
 GET http://localhost:3000/ccn
 
 ###
-POST  http://localhost:3000/ccn
+POST http://localhost:3000/ccn
 Content-Type: application/json
 
 {
-    "name": "HSBC"
+    "name": "American Express"
 }
 
 ###
@@ -82,9 +69,8 @@ PUT http://localhost:3000/users/creditcard
 Content-Type: application/json
 
 {
-    "id": "fed60f5a-1796-4859-bb61-ff97dae4f259",
-    "creditCardNumber": "223456783",
-    "creditCardNetworkId": "57a76bf0-5f30-42cc-929f-abd1def4b800"
-
+    "id": "d1f8e7b3-5cf0-41be-bf6f-fc9daea151f3",
+    "creditCardNumber": "789123456012",
+    "creditCardNetworkId": "4743f630-8525-461c-8f83-fea1152f0d41"
 
 }

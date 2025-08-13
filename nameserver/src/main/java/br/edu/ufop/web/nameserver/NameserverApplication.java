@@ -1,4 +1,4 @@
-package br.ufop.edu.web.nameserver;
+package br.edu.ufop.web.nameserver;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -16,7 +16,7 @@ public class CreateUserDTO {
     private String name;
 
     private String creditCardNumber;
-    private UUID creditCardNetworkId;
+    private UUID creditCardNetwordId;
 
     private String email;
     private String password;

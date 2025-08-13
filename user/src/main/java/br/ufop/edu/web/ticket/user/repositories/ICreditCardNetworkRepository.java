@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import br.ufop.edu.web.ticket.user.models.CreditCardNetworkModel;
 
-public interface ICreditCardNetworkRepository extends JpaRepository<CreditCardNetworkModel, UUID>{
-
+public interface ICreditCardNetworkRepository
+    extends JpaRepository<CreditCardNetworkModel, UUID> {
     
 }

@@ -17,8 +17,8 @@ import lombok.Setter;
 @Entity
 @Table(name = "tb_credit_card_network")
 
-@Getter
 @Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -30,4 +30,5 @@ public class CreditCardNetworkModel {
 
     @Column(nullable = false, columnDefinition = "varchar(100)")
     private String name;
+
 }

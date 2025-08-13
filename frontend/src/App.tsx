@@ -1,3 +1,4 @@
+// victoriacarvalho/web-ii/WEB-II-b263f27ce3a273a4089485c48fe2471c7d041967/frontend/src/App.tsx
 import { useState, useEffect, useCallback } from "react";
 import "./App.css";
 import api from "./services/api";
@@ -47,14 +48,15 @@ function App() {
   });
 
   const fetchUsers = useCallback(async () => {
+    setLoading((prev) => ({ ...prev, users: true }));
     try {
-      setLoading((prev) => ({ ...prev, users: true }));
       const response = await api("/api/users");
       setUsers(Array.isArray(response) ? response : []);
-    } catch (e) {
+    } catch (err) {
+      console.error("Erro ao carregar utilizadores:", err);
       setError((prev) => ({
         ...prev,
-        users: "Falha ao carregar utilizadores.",
+        users: "Falha ao carregar utilizadores. Verifique o console.",
       }));
     } finally {
       setLoading((prev) => ({ ...prev, users: false }));
@@ -62,45 +64,55 @@ function App() {
   }, []);
 
   const fetchEvents = useCallback(async () => {
+    setLoading((prev) => ({ ...prev, events: true }));
     try {
-      setLoading((prev) => ({ ...prev, events: true }));
       const response = await api("/api/events");
       setEvents(Array.isArray(response) ? response : []);
-    } catch (e) {
-      setError((prev) => ({ ...prev, events: "Falha ao carregar eventos." }));
+    } catch (err) {
+      console.error("Erro ao carregar eventos:", err);
+      setError((prev) => ({
+        ...prev,
+        events: "Falha ao carregar eventos. Verifique o console.",
+      }));
     } finally {
       setLoading((prev) => ({ ...prev, events: false }));
     }
   }, []);
 
   const fetchSales = useCallback(async () => {
+    setLoading((prev) => ({ ...prev, sales: true }));
     try {
-      setLoading((prev) => ({ ...prev, sales: true }));
       const response = await api("/api/sales");
       setSales(Array.isArray(response) ? response : []);
-    } catch (e) {
-      setError((prev) => ({ ...prev, sales: "Falha ao carregar vendas." }));
+    } catch (err) {
+      console.error("Erro ao carregar vendas:", err);
+      setError((prev) => ({
+        ...prev,
+        sales: "Falha ao carregar vendas. Verifique o console.",
+      }));
     } finally {
       setLoading((prev) => ({ ...prev, sales: false }));
     }
   }, []);
+
   useEffect(() => {
     fetchUsers();
     fetchEvents();
     fetchSales();
   }, [fetchUsers, fetchEvents, fetchSales]);
 
-  const handleSaleCreated = async () => {
-    await fetchSales();
+  const handleSaleCreated = () => {
+    fetchSales();
     setActiveTab("sales");
   };
 
-  const handleEventCreated = async () => {
-    await fetchEvents();
+  const handleEventCreated = () => {
+    fetchEvents();
     setActiveTab("list-events");
   };
 
   const handleStatusChange = async (saleId: number, newStatus: string) => {
+    const originalSales = [...sales];
     setSales((currentSales) =>
       currentSales.map((s) =>
         s.id === saleId ? { ...s, paymentStatus: newStatus } : s
@@ -113,8 +125,9 @@ function App() {
         body: JSON.stringify({ paymentStatus: newStatus }),
       });
     } catch (err) {
-      alert("Falha ao atualizar o status. A lista será recarregada.");
-      fetchSales();
+      console.error("Falha ao atualizar o status:", err);
+      alert("Falha ao atualizar o status. A alteração será desfeita.");
+      setSales(originalSales); // Reverte a alteração em caso de erro
     }
   };
 

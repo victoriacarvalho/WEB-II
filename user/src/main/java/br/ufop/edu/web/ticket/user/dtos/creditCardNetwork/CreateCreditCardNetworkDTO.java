@@ -1,7 +1,5 @@
-package br.ufop.edu.web.ticket.user.dtos.creditCardNetwork;
-
+package br.ufop.edu.web.ticket.user.dtos.creditcardnetwork;
 
 public record CreateCreditCardNetworkDTO(String name) {
-
     
 }

@@ -6,14 +6,16 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum EnumUserType {
-    //Cliente - comprar
-    //Empresa - organiza eventos
-    //Administrador - gerenciar eventos, organizadoras e clientes
 
-    CUSTOMER(1, "Cliente"),
-    ENTERPRISE(2, "Empresa"),
-    ADMIN(3, "Administrador");
+    // Cliente - comprar ticket
+    // Organizadora - evento
+    // Administrador
+    CUSTOMER(1, "Customer"),
+    ENTERPRISE(2, "Enterprise"),
+    ADMINISTRATOR(3, "Administrator"); 
 
+    // id - descrição
     private Integer id;
     private String description;
+    
 }

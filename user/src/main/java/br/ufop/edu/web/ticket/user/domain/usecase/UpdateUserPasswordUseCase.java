@@ -6,27 +6,28 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @AllArgsConstructor
 public class UpdateUserPasswordUseCase {
-
+    
     private String emailModel;
-     private String emailPassed;
+    private String emailPassed;
     private String oldPasswordModel;
     private String oldPasswordPassed;
 
-    public void validate (){
-        validateEmail();
+    public void validate() {
+        validateEMail();
         validateOldPassword();
     }
 
-    private void validateEmail() {
-        if (emailModel != emailPassed){
-            throw new RuntimeException("Os emails não conferem");
-        }
-
-}
-    private void validateOldPassword() {
-        if (oldPasswordModel != oldPasswordPassed){
-            throw new RuntimeException("As senhas não conferem");
+    private void validateEMail() {
+        if (!emailModel.equals(emailPassed)) {
+            throw new RuntimeException("Invalid email.");
         }
     }
+
+    private void validateOldPassword() {
+        if (!oldPasswordModel.equals(oldPasswordPassed)) {
+            throw new RuntimeException("Invalid old password.");
+        }
+    }
+
 
 }

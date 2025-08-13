@@ -12,14 +12,12 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateUserDTO {
-    
+
     private UUID id;
     private String name;
     private String creditCardNumber;
-    private String email;  
+    private String email;
     private String password;
     private String city;
-
-
-
+    
 }

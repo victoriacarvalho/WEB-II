@@ -1,3 +1,4 @@
+// victoriacarvalho/web-ii/WEB-II-b263f27ce3a273a4089485c48fe2471c7d041967/frontend/src/components/events/CreateEvent.tsx
 import { useState } from "react";
 import api from "../../services/api";
 
@@ -6,7 +7,6 @@ interface CreateEventProps {
 }
 
 const CreateEvent = ({ onEventCreated }: CreateEventProps) => {
-  // ... (o resto do código do formulário permanece igual, mas com a nova prop)
   const [description, setDescription] = useState("");
   const [eventDate, setEventDate] = useState("");
   const [salesStartDate, setSalesStartDate] = useState("");
@@ -39,31 +39,31 @@ const CreateEvent = ({ onEventCreated }: CreateEventProps) => {
         body: JSON.stringify(data),
       });
       setSuccessMessage("Evento cadastrado com sucesso!");
-      onEventCreated(); // Avisa o App.tsx
 
-      // Limpar formulário
-      setDescription("");
-      setEventDate("");
-      setSalesStartDate("");
-      setSalesEndDate("");
-      setTicketPrice("");
-      setEventTypeId("");
+      // Limpa o formulário e navega após um breve intervalo
+      setTimeout(() => {
+        onEventCreated();
+        setDescription("");
+        setEventDate("");
+        setSalesStartDate("");
+        setSalesEndDate("");
+        setTicketPrice("");
+        setEventTypeId("");
+      }, 1500);
     } catch (err) {
-      setError("Erro ao cadastrar evento.");
+      setError("Erro ao cadastrar evento. Verifique o console para detalhes.");
       console.error(err);
     } finally {
       setLoading(false);
     }
   };
 
-  // O JSX do formulário continua o mesmo
   return (
     <div className="form-container">
       <h2>Cadastrar Novo Evento</h2>
       {error && <p className="error-message">{error}</p>}
       {successMessage && <p className="success-message">{successMessage}</p>}
       <form onSubmit={handleCreateEvent}>
-        {/* ... todos os form-groups ... */}
         <div className="form-group">
           <label htmlFor="description">Descrição do Evento:</label>
           <input
@@ -123,6 +123,7 @@ const CreateEvent = ({ onEventCreated }: CreateEventProps) => {
             id="eventTypeId"
             value={eventTypeId}
             onChange={(e) => setEventTypeId(e.target.value)}
+            placeholder="Ex: 1"
             required
           />
         </div>

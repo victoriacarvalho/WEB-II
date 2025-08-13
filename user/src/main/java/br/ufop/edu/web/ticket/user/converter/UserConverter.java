@@ -52,7 +52,6 @@ public class UserConverter {
             .password(updateUserDTO.getPassword())
             .city(updateUserDTO.getCity())
             .build();
-
     }
     
 }

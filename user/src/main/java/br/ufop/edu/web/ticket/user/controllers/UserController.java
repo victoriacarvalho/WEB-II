@@ -1,6 +1,7 @@
 package br.ufop.edu.web.ticket.user.controllers;
 
 import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -75,50 +76,53 @@ public class UserController {
     }
 
     @PutMapping
-    public ResponseEntity<SimpleUserRecordDTO> 
-        updateUser(@RequestBody 
-            UpdateUserDTO updateUserDTO) {
-        SimpleUserRecordDTO simpleUserRecordDTO = userService.updateUser(updateUserDTO);
+    public ResponseEntity<SimpleUserRecordDTO> updateUser(@RequestBody UpdateUserDTO updateUserDTO) {
 
+        SimpleUserRecordDTO simpleUserRecordDTO = userService.updateUser(updateUserDTO);
 
         if (simpleUserRecordDTO == null) {
             return ResponseEntity.notFound().build();
         }
+
         return ResponseEntity.ok(simpleUserRecordDTO);
+
     }
 
     @PutMapping("/password")
-    public ResponseEntity<SimpleUserRecordDTO> updateUserPassword( @RequestBody UpdateUserPasswordDTO updateUserPasswordDTO) {
-        
-       SimpleUserRecordDTO simpleUserRecordDTO = userService.updateUserPassword(updateUserPasswordDTO);
+    public ResponseEntity<SimpleUserRecordDTO> updateUserPassword(@RequestBody  UpdateUserPasswordDTO updateUserPasswordDTO) {
+
+        SimpleUserRecordDTO simpleUserRecordDTO = userService.updateUserPassword(updateUserPasswordDTO);
 
         if (simpleUserRecordDTO == null) {
             return ResponseEntity.notFound().build();
         }
+
         return ResponseEntity.ok(simpleUserRecordDTO);
-            
+
     }
 
     @DeleteMapping("/remove")
     public ResponseEntity<Object> deleteUser(@RequestBody DeleteUserDTO deleteUserDTO) {
-       
+        
         userService.deleteUser(deleteUserDTO);
-        return ResponseEntity.ok("Usuário deletado com sucesso");
+        return ResponseEntity.ok("User has been deleted.");
 
     }
 
     @PutMapping("/creditcard")
     public ResponseEntity<SimpleUserRecordDTO> updateCreditCard(
         @RequestBody UpdateUserCreditCardDTO updateUserCreditCardDTO
-    ){
-        SimpleUserRecordDTO simpleUserRecordDTO = userService.updateCreditCard(updateUserCreditCardDTO);
+    ) {
 
-        if(simpleUserRecordDTO == null)
-        {
+        SimpleUserRecordDTO simpleUserRecordDTO = 
+            userService.updateCreditCard(updateUserCreditCardDTO);
+
+        if (simpleUserRecordDTO == null) {
             return ResponseEntity.badRequest().build();
         }
 
         return ResponseEntity.ok(simpleUserRecordDTO);
+
     }
 
 

@@ -1,3 +1,4 @@
+// victoriacarvalho/web-ii/WEB-II-b263f27ce3a273a4089485c48fe2471c7d041967/frontend/src/components/sales/CreateSale.tsx
 import { useState } from "react";
 import api from "../../services/api";
 
@@ -36,7 +37,8 @@ const CreateSale = ({ users, events, onSaleCreated }: CreateSaleProps) => {
     setSuccessMessage(null);
 
     const data = {
-      userId: selectedUserId,
+      // CORREÇÃO CRÍTICA: Converter o ID do utilizador para número
+      userId: parseInt(selectedUserId, 10),
       paymentStatus: paymentStatus,
       eventIds: [parseInt(selectedEventId, 10)],
     };
@@ -48,12 +50,16 @@ const CreateSale = ({ users, events, onSaleCreated }: CreateSaleProps) => {
         body: JSON.stringify(data),
       });
       setSuccessMessage("Venda cadastrada com sucesso!");
-      onSaleCreated();
-      setSelectedUserId("");
-      setSelectedEventId("");
-      setPaymentStatus("PENDENTE");
+
+      // Limpa o formulário e navega após um breve intervalo
+      setTimeout(() => {
+        onSaleCreated();
+        setSelectedUserId("");
+        setSelectedEventId("");
+        setPaymentStatus("PENDENTE");
+      }, 1500);
     } catch (err) {
-      setError("Erro ao cadastrar a venda.");
+      setError("Erro ao cadastrar a venda. Verifique o console para detalhes.");
       console.error(err);
     } finally {
       setLoading(false);
@@ -78,7 +84,7 @@ const CreateSale = ({ users, events, onSaleCreated }: CreateSaleProps) => {
             </option>
             {users.map((user) => (
               <option key={user.id} value={user.id}>
-                {user.name}
+                {user.name} ({user.email})
               </option>
             ))}
           </select>
