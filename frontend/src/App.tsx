@@ -163,7 +163,7 @@ function App() {
 
   return (
     <div className="tabs-container">
-      <h1>Sistema de Vendas de Tickets</h1>
+      <h1>Sistema de Vendas de Tickets - WEB 2</h1>
       <nav className="tabs-nav">
         <button
           className={`tab-button ${activeTab === "list-users" ? "active" : ""}`}
